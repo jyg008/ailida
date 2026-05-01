@@ -1,0 +1,567 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-bg: #FFFFFF;
+    --secondary-bg: #F5F5F7;
+    --accent-color: #0071E3;
+    --text-primary: #1D1D1F;
+    --text-secondary: #86868B;
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.08);
+    --border-radius: 16px;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    color: var(--text-primary);
+    overflow-x: hidden;
+}
+
+.background-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        url('https://images.unsplash.com/photo-1519681392205-9b0d5979e4b6?w=1920&q=80'),
+        linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background-size: cover;
+    background-position: center;
+    opacity: 0.15;
+    z-index: -1;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 40px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 60px;
+}
+
+/* 时间部分 */
+.time-section {
+    text-align: center;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.time {
+    font-size: 96px;
+    font-weight: 200;
+    letter-spacing: -4px;
+    line-height: 1;
+    margin-bottom: 8px;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.date {
+    font-size: 24px;
+    font-weight: 400;
+    opacity: 0.9;
+    margin-bottom: 12px;
+}
+
+.greeting {
+    font-size: 32px;
+    font-weight: 500;
+    opacity: 0.95;
+}
+
+/* 搜索部分 */
+.search-section {
+    width: 100%;
+    max-width: 680px;
+}
+
+.search-box {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px) saturate(180%);
+    border-radius: 24px;
+    box-shadow: var(--shadow-lg), 0 0 0 1px rgba(255, 255, 255, 0.5);
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: var(--transition);
+}
+
+.search-box:focus-within {
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.15), 0 0 0 2px var(--accent-color);
+    transform: translateY(-2px);
+}
+
+.search-icon {
+    width: 24px;
+    height: 24px;
+    color: var(--text-secondary);
+    flex-shrink: 0;
+}
+
+#searchInput {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 18px;
+    font-family: inherit;
+    color: var(--text-primary);
+    background: transparent;
+}
+
+#searchInput::placeholder {
+    color: var(--text-secondary);
+}
+
+.search-engines {
+    display: flex;
+    gap: 8px;
+    margin-left: 8px;
+}
+
+.engine-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: inherit;
+    background: var(--secondary-bg);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.engine-btn:hover {
+    background: rgba(0, 113, 227, 0.1);
+    color: var(--accent-color);
+}
+
+.engine-btn.active {
+    background: var(--accent-color);
+    color: white;
+}
+
+/* 快捷方式部分 */
+.shortcuts-section {
+    width: 100%;
+}
+
+.shortcuts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 24px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.shortcut-card {
+    aspect-ratio: 1;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px) saturate(180%);
+    border-radius: 24px;
+    box-shadow: var(--shadow-md);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    cursor: pointer;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.shortcut-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, transparent 0%, rgba(255, 255, 255, 0.3) 100%);
+    opacity: 0;
+    transition: var(--transition);
+}
+
+.shortcut-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+.shortcut-card:hover::before {
+    opacity: 1;
+}
+
+.shortcut-card:active {
+    transform: translateY(-4px) scale(0.98);
+}
+
+.shortcut-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    font-weight: 600;
+    color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: var(--transition);
+}
+
+.shortcut-card:hover .shortcut-icon {
+    transform: scale(1.1);
+}
+
+.shortcut-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+    text-align: center;
+    max-width: 90%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* 添加快捷方式按钮 */
+.add-shortcut-btn {
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: none;
+    background: white;
+    box-shadow: var(--shadow-lg), 0 0 0 4px rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    transition: var(--transition);
+    z-index: 100;
+}
+
+.add-shortcut-btn svg {
+    width: 28px;
+    height: 28px;
+    color: var(--accent-color);
+}
+
+.add-shortcut-btn:hover {
+    transform: scale(1.1) rotate(90deg);
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.2), 0 0 0 4px rgba(255, 255, 255, 0.5);
+}
+
+/* 模态框 */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(8px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.modal.active {
+    display: flex;
+    opacity: 1;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 24px;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.3);
+    width: 90%;
+    max-width: 480px;
+    overflow: hidden;
+    animation: modalSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes modalSlideIn {
+    from {
+        transform: translateY(20px) scale(0.95);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+.modal-header {
+    padding: 24px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.modal-header h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.modal-close {
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: var(--secondary-bg);
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+.modal-close:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.modal-close svg {
+    width: 18px;
+    height: 18px;
+    color: var(--text-secondary);
+}
+
+.modal-body {
+    padding: 24px;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group:last-child {
+    margin-bottom: 0;
+}
+
+.input-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid rgba(0, 0, 0, 0.06);
+    border-radius: 12px;
+    font-size: 16px;
+    font-family: inherit;
+    color: var(--text-primary);
+    transition: var(--transition);
+    background: white;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    background: rgba(0, 113, 227, 0.02);
+}
+
+.color-picker {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 8px;
+}
+
+.color-btn {
+    width: 100%;
+    aspect-ratio: 1;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: inset 0 0 0 2px transparent;
+}
+
+.color-btn:hover {
+    transform: scale(1.1);
+}
+
+.color-btn.active {
+    box-shadow: inset 0 0 0 3px white, 0 0 0 2px var(--accent-color);
+}
+
+.modal-footer {
+    padding: 20px 24px;
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+}
+
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-primary {
+    background: var(--accent-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #005bb5;
+    transform: translateY(-1px);
+}
+
+.btn-secondary {
+    background: var(--secondary-bg);
+    color: var(--text-primary);
+}
+
+.btn-secondary:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+/* 右键菜单 */
+.context-menu {
+    position: fixed;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    padding: 8px;
+    display: none;
+    z-index: 1001;
+    min-width: 160px;
+}
+
+.context-menu.active {
+    display: block;
+    animation: contextMenuFadeIn 0.2s ease;
+}
+
+@keyframes contextMenuFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.context-menu-item {
+    width: 100%;
+    padding: 12px 16px;
+    border: none;
+    background: transparent;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    font-family: inherit;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.context-menu-item:hover {
+    background: var(--secondary-bg);
+}
+
+.context-menu-item svg {
+    width: 18px;
+    height: 18px;
+    color: var(--text-secondary);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .container {
+        padding: 40px 20px;
+        gap: 40px;
+    }
+
+    .time {
+        font-size: 64px;
+    }
+
+    .date {
+        font-size: 18px;
+    }
+
+    .greeting {
+        font-size: 24px;
+    }
+
+    .search-box {
+        padding: 16px 20px;
+    }
+
+    #searchInput {
+        font-size: 16px;
+    }
+
+    .search-engines {
+        display: none;
+    }
+
+    .shortcuts-grid {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 16px;
+    }
+
+    .shortcut-icon {
+        width: 48px;
+        height: 48px;
+        font-size: 24px;
+    }
+
+    .shortcut-name {
+        font-size: 12px;
+    }
+
+    .add-shortcut-btn {
+        width: 56px;
+        height: 56px;
+        bottom: 24px;
+        right: 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .time {
+        font-size: 48px;
+    }
+
+    .greeting {
+        font-size: 20px;
+    }
+
+    .shortcuts-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}

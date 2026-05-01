@@ -295,6 +295,300 @@ body {
     font-weight: 600;
 }
 
+/* 组件大小 */
+.widget.size-small {
+    grid-column: span 1;
+}
+
+.widget.size-medium {
+    grid-column: span 1;
+}
+
+.widget.size-large {
+    grid-column: span 2;
+}
+
+/* 组件操作按钮 */
+.widget-controls {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    display: flex;
+    gap: 4px;
+    opacity: 0;
+    transition: var(--transition);
+}
+
+.widget:hover .widget-controls {
+    opacity: 1;
+}
+
+.widget-control-btn {
+    width: 28px;
+    height: 28px;
+    border: none;
+    background: rgba(0, 0, 0, 0.06);
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+.widget-control-btn:hover {
+    background: rgba(0, 0, 0, 0.12);
+}
+
+.widget-control-btn svg {
+    width: 14px;
+    height: 14px;
+    color: var(--text-secondary);
+}
+
+/* 添加组件按钮 */
+.add-widget-btn {
+    position: fixed;
+    bottom: 110px;
+    right: 40px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: none;
+    background: white;
+    box-shadow: var(--shadow-lg), 0 0 0 4px rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    transition: var(--transition);
+    z-index: 100;
+}
+
+.add-widget-btn svg {
+    width: 28px;
+    height: 28px;
+    color: #FF6B6B;
+}
+
+.add-widget-btn:hover {
+    transform: scale(1.1) rotate(90deg);
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.2), 0 0 0 4px rgba(255, 255, 255, 0.5);
+}
+
+/* 组件选择列表 */
+.widget-modal-content {
+    max-width: 640px;
+}
+
+.widget-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 16px;
+    padding: 8px 0;
+}
+
+.widget-item {
+    background: var(--secondary-bg);
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: var(--transition);
+    border: 2px solid transparent;
+}
+
+.widget-item:hover {
+    background: white;
+    border-color: var(--accent-color);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+}
+
+.widget-item.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.widget-item.disabled:hover {
+    transform: none;
+    border-color: transparent;
+    box-shadow: none;
+}
+
+.widget-item-icon {
+    font-size: 32px;
+    margin-bottom: 8px;
+}
+
+.widget-item-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.widget-item-desc {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 4px;
+}
+
+/* 计算器组件 */
+.calculator-display {
+    background: var(--secondary-bg);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+    text-align: right;
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--text-primary);
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.calculator-buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+}
+
+.calc-btn {
+    aspect-ratio: 1;
+    border: none;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    transition: var(--transition);
+    background: var(--secondary-bg);
+    color: var(--text-primary);
+}
+
+.calc-btn:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.calc-btn.operator {
+    background: rgba(0, 113, 227, 0.1);
+    color: var(--accent-color);
+}
+
+.calc-btn.operator:hover {
+    background: rgba(0, 113, 227, 0.2);
+}
+
+.calc-btn.equals {
+    background: var(--accent-color);
+    color: white;
+}
+
+.calc-btn.equals:hover {
+    background: #005bb5;
+}
+
+/* 番茄钟组件 */
+.tomato-display {
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.tomato-time {
+    font-size: 48px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.tomato-status {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.tomato-controls {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+.tomato-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    transition: var(--transition);
+    background: var(--accent-color);
+    color: white;
+}
+
+.tomato-btn:hover {
+    background: #005bb5;
+}
+
+.tomato-btn.secondary {
+    background: var(--secondary-bg);
+    color: var(--text-primary);
+}
+
+.tomato-btn.secondary:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+/* 记事本组件 */
+.notepad-content {
+    width: 100%;
+    min-height: 120px;
+    border: 2px solid rgba(0, 0, 0, 0.06);
+    border-radius: 12px;
+    padding: 12px;
+    font-size: 14px;
+    font-family: inherit;
+    resize: none;
+    transition: var(--transition);
+    background: white;
+}
+
+.notepad-content:focus {
+    outline: none;
+    border-color: var(--accent-color);
+}
+
+/* 网站状态组件 */
+.status-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.status-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    background: var(--secondary-bg);
+    border-radius: 10px;
+}
+
+.status-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.status-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #4CAF50;
+}
+
+.status-indicator.offline {
+    background: #FF6B6B;
+}
+
 /* 每日一言组件 */
 .quote-content {
     padding: 8px 0;

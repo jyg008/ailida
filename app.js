@@ -17,10 +17,15 @@ const searchEngines = {
     bing: 'https://www.bing.com/search?q='
 };
 
+const DELETE_PASSWORD = '741852';
+
 let shortcuts = JSON.parse(localStorage.getItem('shortcuts')) || defaultShortcuts;
 let currentEngine = localStorage.getItem('searchEngine') || 'google';
 let editingIndex = null;
 let selectedColor = '#FF6B6B';
+
+let draggedItem = null;
+let draggedIndex = null;
 
 // 初始化
 document.addEventListener('DOMContentLoaded', () => {
@@ -63,6 +68,7 @@ function renderShortcuts() {
         const card = document.createElement('div');
         card.className = 'shortcut-card';
         card.dataset.index = index;
+        card.draggable = true;
         
         const icon = document.createElement('div');
         icon.className = 'shortcut-icon';
@@ -94,14 +100,21 @@ function renderShortcuts() {
         card.appendChild(icon);
         card.appendChild(name);
         
-        card.addEventListener('click', () => {
-            window.open(shortcut.url, '_blank');
+        card.addEventListener('click', (e) => {
+            if (!card.classList.contains('dragging')) {
+                window.open(shortcut.url, '_blank');
+            }
         });
         
         card.addEventListener('contextmenu', (e) => {
             e.preventDefault();
             showContextMenu(e, index);
         });
+        
+        card.addEventListener('dragstart', handleDragStart);
+        card.addEventListener('dragover', handleDragOver);
+        card.addEventListener('drop', handleDrop);
+        card.addEventListener('dragend', handleDragEnd);
         
         grid.appendChild(card);
     });
@@ -182,12 +195,12 @@ function setupEventListeners() {
     
     document.getElementById('deleteShortcut').addEventListener('click', () => {
         if (editingIndex !== null) {
-            shortcuts.splice(editingIndex, 1);
-            localStorage.setItem('shortcuts', JSON.stringify(shortcuts));
-            renderShortcuts();
             contextMenu.classList.remove('active');
+            showPasswordModal();
         }
     });
+    
+    setupPasswordModal();
     
     document.addEventListener('click', (e) => {
         if (!contextMenu.contains(e.target)) {
@@ -254,5 +267,113 @@ function saveShortcut() {
 function updateColorSelection() {
     document.querySelectorAll('.color-btn').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.color === selectedColor);
+    });
+}
+
+function setupPasswordModal() {
+    const passwordModal = document.getElementById('passwordModal');
+    const passwordInput = document.getElementById('passwordInput');
+    const passwordModalClose = document.getElementById('passwordModalClose');
+    const passwordCancelBtn = document.getElementById('passwordCancelBtn');
+    const passwordConfirmBtn = document.getElementById('passwordConfirmBtn');
+    
+    passwordModalClose.addEventListener('click', closePasswordModal);
+    passwordCancelBtn.addEventListener('click', closePasswordModal);
+    
+    passwordModal.addEventListener('click', (e) => {
+        if (e.target === passwordModal) closePasswordModal();
+    });
+    
+    passwordConfirmBtn.addEventListener('click', verifyPassword);
+    
+    passwordInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            verifyPassword();
+        }
+    });
+}
+
+function showPasswordModal() {
+    const passwordModal = document.getElementById('passwordModal');
+    const passwordInput = document.getElementById('passwordInput');
+    passwordInput.value = '';
+    passwordModal.classList.add('active');
+    setTimeout(() => passwordInput.focus(), 100);
+}
+
+function closePasswordModal() {
+    document.getElementById('passwordModal').classList.remove('active');
+}
+
+function verifyPassword() {
+    const passwordInput = document.getElementById('passwordInput');
+    const password = passwordInput.value;
+    
+    if (password === DELETE_PASSWORD) {
+        if (editingIndex !== null) {
+            shortcuts.splice(editingIndex, 1);
+            localStorage.setItem('shortcuts', JSON.stringify(shortcuts));
+            renderShortcuts();
+            closePasswordModal();
+            editingIndex = null;
+        }
+    } else {
+        passwordInput.value = '';
+        passwordInput.focus();
+        const errorMsg = document.createElement('div');
+        errorMsg.className = 'error-message';
+        errorMsg.textContent = '密码错误，请重试';
+        errorMsg.style.cssText = 'color: #FF6B6B; font-size: 14px; margin-top: 8px;';
+        
+        const existingError = document.querySelector('.error-message');
+        if (existingError) existingError.remove();
+        
+        passwordInput.parentElement.appendChild(errorMsg);
+        setTimeout(() => errorMsg.remove(), 2000);
+    }
+}
+
+function handleDragStart(e) {
+    draggedItem = this;
+    draggedIndex = parseInt(this.dataset.index);
+    this.classList.add('dragging');
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/html', this.innerHTML);
+}
+
+function handleDragOver(e) {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    
+    const targetIndex = parseInt(this.dataset.index);
+    if (draggedIndex !== targetIndex) {
+        this.classList.add('drag-over');
+    }
+    
+    return false;
+}
+
+function handleDrop(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    const targetIndex = parseInt(this.dataset.index);
+    
+    if (draggedIndex !== targetIndex) {
+        const draggedShortcut = shortcuts[draggedIndex];
+        shortcuts.splice(draggedIndex, 1);
+        shortcuts.splice(targetIndex, 0, draggedShortcut);
+        
+        localStorage.setItem('shortcuts', JSON.stringify(shortcuts));
+        renderShortcuts();
+    }
+    
+    return false;
+}
+
+function handleDragEnd(e) {
+    this.classList.remove('dragging');
+    document.querySelectorAll('.shortcut-card').forEach(card => {
+        card.classList.remove('drag-over');
     });
 }

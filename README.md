@@ -1,6 +1,6 @@
 # AILida - 智能导航
 
-一个简洁美观的个人导航网站，类似WeTab，部署在GitHub Pages上。
+一个简洁美观的个人导航网站，部署在GitHub Pages上。
 
 ## 功能特性
 
